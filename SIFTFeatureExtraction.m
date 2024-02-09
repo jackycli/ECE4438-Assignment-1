@@ -6,6 +6,7 @@ imageDataset = imageDatastore(datasetPath, "IncludeSubfolders",true, "LabelSourc
 
 %% Get dataset size
 datasetSize = size(imageDataset.Files);
+%Data = zeros(datasetSize(1), SIFTNUM*128);
 
 %% Organize Data
 for i = 1:datasetSize(1)
@@ -33,7 +34,12 @@ for i = 1:datasetSize(1)
     end
 
     %Put in custom table
-    Data(i, :) = {imFeatures};
+    imFeatures = reshape(imFeatures, [1, numel(imFeatures)]);
+    Data(i, :) = num2cell(imFeatures);
+
 end
 
-[GN, ~, Labels] = unique(imageDataset.Labels);
+%Append the label data to the cell array
+Data = horzcat(Data, num2cell(imageDataset.Labels));
+%Convert the cell array to Table form
+Data = cell2table(Data);
