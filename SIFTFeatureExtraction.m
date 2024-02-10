@@ -1,7 +1,8 @@
 SIFTNUM = 50;
 
 %% Define the location of the dataset
-datasetPath = ('C:\Users\JD Herlehy\OneDrive - The University of Western Ontario\Forth Year\4436 Adv Img Proc\Ass 1\WasteBinary');
+%%datasetPath = ('C:\Users\JD Herlehy\OneDrive - The University of Western Ontario\Forth Year\4436 Adv Img Proc\Ass 1\WasteBinary');
+datasetPath = ('C:\Users\jacky\OneDrive\Documents\Courses\ECE 4438 Advanced Image Processing\ECE4438-Assignment-1\WasteBinary');
 imageDataset = imageDatastore(datasetPath, "IncludeSubfolders",true, "LabelSource","foldernames");
 
 %% Get dataset size
