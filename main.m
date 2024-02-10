@@ -8,17 +8,18 @@ idx = randperm(numFeatures);
 idxTrain = idx(1:numFeaturesTrain);
 idxTest = idx(numFeaturesTrain+1:end);
 %Partion the table for training and testing from the random indices
-TableTrain = Data(idxTrain, :);
-TableTest = Data(idxTest, :);
+TableTrain = {Data(idxTrain, :), imageDataset.Labels(idxTrain, :)};
+TableTest = {Data(idxTest, :), imageDataset.Labels(idxTest, :)};
+
 
 %% Create layers and options for training
 % Used the deep Network Desiginer to generate code for the layers
 % It is imported from the .mat file
 
 options = trainingOptions('sgdm', ...
-    'MaxEpochs',20,...
-    'InitialLearnRate',1e-4, ...
+    'MaxEpochs',500,...
+    'InitialLearnRate',2e-4, ...
     'Verbose',false, ...
     'Plots','training-progress');
 
-net = trainNetwork(TableTrain,layers_2,options);
+net = trainNetwork(TableTrain{:},layers_3,options);

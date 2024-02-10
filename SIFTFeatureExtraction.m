@@ -25,21 +25,18 @@ for i = 1:datasetSize(1)
     %than 200 features unless original points are less than 200
     %Cut down to 200 to match the input layer
     %or pad with zeros to get to 200
-    if(length(imFeatures) > SIFTNUM)
+    if(size(imFeatures, 1) > SIFTNUM)
         imFeatures((SIFTNUM + 1):end, :) = [];
     end
-    if(length(imFeatures) < SIFTNUM)
-        pad = zeros(SIFTNUM - length(imFeatures), 128);
+    if(size(imFeatures, 1) < SIFTNUM)
+        pad = zeros(SIFTNUM - size(imFeatures, 1), 128);
         imFeatures = [imFeatures; pad];
     end
 
     %Put in custom table
-    imFeatures = reshape(imFeatures, [1, numel(imFeatures)]);
-    Data(i, :) = num2cell(imFeatures);
+    Data(i, :) = reshape(imFeatures, [1, numel(imFeatures)]);
+
+    %Must clear this varible to reuse as the dimensions changed
+    imFeatures = 0;
 
 end
-
-%Append the label data to the cell array
-Data = horzcat(Data, num2cell(imageDataset.Labels));
-%Convert the cell array to Table form
-Data = cell2table(Data);
