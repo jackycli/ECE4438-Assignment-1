@@ -14,6 +14,7 @@ for i = 1:datasetSize(1)
     
     %Convert to grayscale
     image = rgb2gray(imread(imageDataset.Files{i}));
+    image = histeq(image);
     %Get strongest __ SIFT features
     %Preliminary cut the size with the strongest features
     imgSIFTs = detectSIFTFeatures(image);
