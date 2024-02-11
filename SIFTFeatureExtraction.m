@@ -1,5 +1,6 @@
 %This function gets the SIFT features from the input image dataset
 function [Data] = SIFTFeatureExtraction(imageDataset)
+    %set the number of SIFT features to use to 50
     SIFTNUM = 50;
 
     %% Get dataset size
