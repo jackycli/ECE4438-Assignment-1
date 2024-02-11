@@ -1,44 +1,23 @@
-%% Split the data to training and testing
-%get number of observations to go in each data part
-numFeatures = size(Data,1);
-numFeaturesTrain = floor(0.8*numFeatures);
-numFeaturesTest = numFeatures - numFeaturesTrain;
-%Create the indices for the amounts to go to train and test
-idx = randperm(numFeatures);
-idxTrain = idx(1:numFeaturesTrain);
-idxTest = idx(numFeaturesTrain+1:end);
-%Partion the table for training and testing from the random indices
-TableTrain = {Data(idxTrain, :), imageDataset.Labels(idxTrain, :)};
-TableTest = {Data(idxTest, :), imageDataset.Labels(idxTest, :)};
+%% Assignment 1 - JD Herlehy || Jacky Li
+%% Feb.10.2024
+%% Compare accuracy difference when giving a MLP NN SIFT Features vs  Raw images
 
+% Using the RealWaste data set, from this using the metal and plastic
+% classes
 
-%% Create layers and options for training
-% Used the deep Network Desiginer to generate code for the layers
-% It is imported from the .mat file
+%[RealWaste: A Novel Real-Life Data Set for Landfill Waste Classification Using Deep Learning](https://www.mdpi.com/2078-2489/14/12/633)
+%https://archive.ics.uci.edu/dataset/908/realwaste
 
-options = trainingOptions('sgdm', ...
-    'MaxEpochs',200,...
-    'InitialLearnRate',2e-3, ...
-    'Verbose',false, ...
-    'Plots','training-progress');
+%% Define the location of the dataset
+%%datasetPath = ('C:\Users\JD Herlehy\OneDrive - The University of Western Ontario\Forth Year\4436 Adv Img Proc\Ass 1\WasteBinary');
+datasetPath = ('C:\Users\jacky\OneDrive\Documents\Courses\ECE 4438 Advanced Image Processing\ECE4438-Assignment-1\WasteBinary');
+imageDataset = imageDatastore(datasetPath, "IncludeSubfolders",true, "LabelSource","foldernames");
 
-layers = [featureInputLayer(size(Data,2))
-     batchNormalizationLayer
-     fullyConnectedLayer(32)
-     batchNormalizationLayer
-     fullyConnectedLayer(8)
-     batchNormalizationLayer
-     fullyConnectedLayer(2)
-     batchNormalizationLayer
-     reluLayer
-     classificationLayer
-     ];
-
-net = trainNetwork(TableTrain{:},layers,options);
-
-%% Check accuracy
-% Get the training accuracy
-
-NetworkPredict = classify(net, TableTest{1});
-LabelTest = TableTest{2};
-AccuracyTest = sum(NetworkPredict == LabelTest)/numel(LabelTest);
+%Get the SIFT data points
+[Data] = SIFTFeatureExtraction(imageDataset)
+%Train and evaluate network with SFIT data
+[AccuracyTrain, AccuracyTest] = SIFTNetwork(Data)
+%Train and evaluate network with raw image data
+[AccuracyTrainRaw, AccuracyTestRaw] = RawNetwork(imageDataset)
+%Display the relevent information
+DisplayInfo(AccuracyTrain, AccuracyTest, AccuracyTrainRaw, AccuracyTestRaw)
