@@ -1,5 +1,5 @@
 %The following function trains and test a network for SIFT feature input
-function [AccuracyTrain, AccuracyTest] = SIFTNetwork(Data)
+function [AccuracyTrain, AccuracyTest] = SIFTNetwork(Data, imageDataset)
     %% Split the data to training and testing
     %get number of observations to go in each data part
     numFeatures = size(Data, 1);

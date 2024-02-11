@@ -15,7 +15,7 @@ imageDataset = imageDatastore(datasetPath, "IncludeSubfolders",true, "LabelSourc
 %Get the SIFT data points
 [Data] = SIFTFeatureExtraction(imageDataset)
 %Train and evaluate network with SFIT data
-[AccuracyTrain, AccuracyTest] = SIFTNetwork(Data)
+[AccuracyTrain, AccuracyTest] = SIFTNetwork(Data, imageDataset)
 %Train and evaluate network with raw image data
 [AccuracyTrainRaw, AccuracyTestRaw] = RawNetwork(imageDataset)
 %Display the relevent information
